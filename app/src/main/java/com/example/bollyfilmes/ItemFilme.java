@@ -2,8 +2,6 @@ package com.example.bollyfilmes;
 
 import android.net.Uri;
 
-
-
 import java.io.Serializable;
 
 public class ItemFilme implements Serializable {
