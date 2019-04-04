@@ -50,7 +50,7 @@ public class FilmeDetalheFragment extends Fragment {
         RatingBar avaliacao = (RatingBar) view.findViewById(R.id.item_avaliacao);
         avaliacao.setRating(itemFilme.getAvaliacao());
 
-        Button btnTrailer = (Button) view.findViewById(R.id.item_btn_trailer);
+
 
         return view;
     }
