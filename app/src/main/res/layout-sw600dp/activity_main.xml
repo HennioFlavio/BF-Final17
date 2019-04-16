@@ -8,7 +8,7 @@
 
     <!-- Fragment de forma fixo - da listagem pq sempre vai ter-->
     <fragment
-        android:id="@+id/main_fragmet"
+        android:id="@+id/main_fragment"
         android:name="com.example.bollyfilmes.MainFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"

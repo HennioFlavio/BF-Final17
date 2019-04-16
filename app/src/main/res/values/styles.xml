@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- valor default para todos os celulares, nao usado para tablets-->
+    <!-- vai ficar vazio para ser padrao-->
+    <style name="BollyFilmeListStyle">
+
+
+    </style>
+
 </resources>

@@ -48,10 +48,18 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Call
 
                 //adiconando de forma dinamica o fragment_filme_detalhe
             }
+
+
                isTablet = true;
 
         } else{//se for igual a nulo, [e p ta no layout do celular
-            isTablet = false;        }
+            isTablet = false;
+        }
+        // fazer isso, tanto pra tablet quando para smartfone
+        MainFragment mainFragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
+        // vai negar se for tablet
+        // Aqui, vai ou nao usar o Filme destaque
+        mainFragment.setUserFilmeDestaque(!isTablet);
 
     }
 

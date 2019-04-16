@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +21,13 @@ import java.util.ArrayList;
 
 
 public class MainFragment extends Fragment {
+    private int posicaoItem = ListView.INVALID_POSITION;
+    private static final String KEY_POSICAO = "SELECIONADO";
+    // ListView colocado no corpo de classe para ser acessado pelo metodo onViewStateRestored
+    private ListView list;
+    // o mesmo que estava em FilmesAdapter
+    private boolean userFilmeDestaque = false;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,8 +43,10 @@ public class MainFragment extends Fragment {
         // acrecentou esse inflate tirou do return e colocou no return somente a view
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
+        // ListView colocado no corpo de classe para ser acessado pelo metodo onViewStateRestored
         // colou ess codigo do MainActivity
-        ListView list = (ListView) view.findViewById(R.id.list_filmes);
+        //ListView list = (ListView) view.findViewById(R.id.list_filmes);
+        list = (ListView) view.findViewById(R.id.list_filmes);
 
         final ArrayList<ItemFilme> arrayList = new ArrayList<>();
         arrayList.add(new ItemFilme("Homem Aranha", "Filme de heroi picado por uma aranha", "10/04/2016", 4));
@@ -46,6 +57,10 @@ public class MainFragment extends Fragment {
         arrayList.add(new ItemFilme("Homem Gato", "Filme de heroi arranhado por um gato", "10/04/2016", 2.5f));
 
         FilmesAdapter adapter = new FilmesAdapter(getContext(), arrayList);
+        // fez alteraçoes aqui para que o filme destaque nao apareca no tablet
+        // usou a flag craiada:userFilmeDestaque
+        adapter.setUserFilmeDestaque(userFilmeDestaque);
+
         list.setAdapter(adapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -56,10 +71,42 @@ public class MainFragment extends Fragment {
                 //Pega a referencia da nossa activity que esta usando esse fragment
                 Callback callback = (Callback) getActivity();
                 callback.onItemSelected((itemFilme));
+                posicaoItem = position;
             }
         });
 
+        // se o estado nao for nule e se existir  a chave
+        if(savedInstanceState != null && savedInstanceState.containsKey(KEY_POSICAO)){
+            // se tem alguma posicao guardada
+            posicaoItem = savedInstanceState.getInt(KEY_POSICAO);
+        }
+
         return view;
+    }
+
+
+
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        // Aqui vai salvar a posicao no cash do fragment :
+        if(posicaoItem != ListView.INVALID_POSITION ){
+            outState.putInt(KEY_POSICAO, posicaoItem);
+        }
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(posicaoItem != ListView.INVALID_POSITION && list != null ){
+            // Restaurando e aproveitando a posicao se for != de invalido
+            // vai pegar a posicao e setar a list
+            // e levar a posicao que queremos
+            list.smoothScrollByOffset(posicaoItem);
+        }
+
     }
 
 
@@ -79,6 +126,11 @@ public class MainFragment extends Fragment {
         }
 
 
+    }
+
+    // Mesmo metodo usado em FilmesAdapter
+    public void setUserFilmeDestaque(boolean userFilmeDestaque) {
+        this.userFilmeDestaque = userFilmeDestaque;
     }
 
     // Criacao de callback para nao abrir putra activity no tablet

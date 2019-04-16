@@ -16,6 +16,8 @@ public class FilmesAdapter extends ArrayAdapter<ItemFilme> {
 
     private static final int VIEW_TYPE_ITEM = 1;
 
+    private boolean userFilmeDestaque = false;
+
     public FilmesAdapter(Context context, ArrayList<ItemFilme> filmes) {
 
         super(context, 0, filmes);
@@ -90,7 +92,8 @@ public class FilmesAdapter extends ArrayAdapter<ItemFilme> {
 
     @Override
     public int getItemViewType(int position) {
-        return (position == 0 ? VIEW_TYPE_DESTAQUE : VIEW_TYPE_ITEM);
+        return (position == 0 && userFilmeDestaque ? VIEW_TYPE_DESTAQUE : VIEW_TYPE_ITEM);
+
     }
 
     @Override
@@ -98,5 +101,9 @@ public class FilmesAdapter extends ArrayAdapter<ItemFilme> {
 
         // pq sao duas views
         return 2;
+    }
+
+    public void setUserFilmeDestaque(boolean userFilmeDestaque) {
+        this.userFilmeDestaque = userFilmeDestaque;
     }
 }
